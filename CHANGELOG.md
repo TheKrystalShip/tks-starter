@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.2.1]
+
+- A sign-in callback that carries no return address goes home rather than leaving `/signed-in` on screen.
+
 ## [0.2.0]
 
 - Signing in through `@thekrystalship/auth-client`, configured from `config.json`.
