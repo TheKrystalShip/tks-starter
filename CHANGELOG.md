@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.2.3]
+
+- `@thekrystalship/auth-client` 0.1.1: a sign-in callback that keeps failing ends instead of looping.
+
 ## [0.2.2]
 
 - An error answer from the site's nginx carries no cache lifetime, so a missing asset is never kept.
