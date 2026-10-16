@@ -65,9 +65,11 @@ with a bearer, drawn by `@thekrystalship/krystal` and signed in through `@thekry
 
 ## Recipes
 
-- **The assistant.** Pin `@thekrystalship/krystal-chat` at the kit's version, add the chat's page as a
-  route, and point `createAssistantClient` at the harness plugin that serves the product; tokens come
-  from `session.fresh()`.
+- **The assistant.** Pin `@thekrystalship/krystal-chat` at the kit's version and point
+  `createAssistantClient` at the harness plugin that serves the product; tokens come from
+  `session.fresh()`. On a wide screen the chat is `docked` in the shell's `Dock`, a panel beside the
+  page; on a phone it is a tab of its own, a route drawing `Chat` with `layout="page"` and `framed`.
+  A product's own blocks go in its `slots`. MovieBot's site is the worked example.
 - **A television mode.** Mark the root `data-tv`, start the kit's spatial focus
   (`@thekrystalship/krystal/lib/spatialFocus`), draw the television pages from the kit's TV components,
   and sign the screen in with `session.device.start()`. MovieBot's site is the worked example.

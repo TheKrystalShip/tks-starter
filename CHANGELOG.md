@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.3.0]
+
+- `@thekrystalship/krystal` 2.0.0.
+- The assistant recipe draws the chat as the other products do: docked on a wide screen, a page with
+  `layout="page"` on a phone.
+
 ## [0.2.3]
 
 - `@thekrystalship/auth-client` 0.1.1: a sign-in callback that keeps failing ends instead of looping.
