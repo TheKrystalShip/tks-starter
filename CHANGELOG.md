@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.2.0]
+
+- Signing in through `@thekrystalship/auth-client`, configured from `config.json`.
+- `npm run init` makes a fresh copy a project of its own and deletes itself.
+- `deploy/setup.sh` and `deploy/deploy.sh`: the web root, the certificate and the nginx vhost, and a
+  deploy that writes `config.json` beside the build.
+- `CLAUDE.md`, the README's start steps and recipes, and the project's component page to fill in.
+- CI on every push and daily against the newest kit and sign-in package, `init` included.
+
 ## [0.1.0]
 
 - The site: the shell, the router, Home, a list page with its detail page, Settings and not found.

@@ -1,0 +1,50 @@
+name: CI
+
+# The template is checked on every push, and every day against the newest releases of the kit and
+# the sign-in package, so a release that would break a new project is seen before a project is made.
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: "17 5 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: read
+
+jobs:
+  check:
+    name: ${{ matrix.pins }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        pins: [pinned, newest]
+    env:
+      # The @thekrystalship scope installs from GitHub Packages, which wants a token even to read.
+      NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          registry-url: https://npm.pkg.github.com
+          scope: "@thekrystalship"
+      - run: npm ci
+      - if: matrix.pins == 'newest'
+        run: npm install --no-save @thekrystalship/krystal@latest @thekrystalship/auth-client@latest
+      - run: npm run lint
+      - run: npm run lint:css
+      - run: npm test
+      - run: npm run build
+      - name: init makes a project that builds
+        if: matrix.pins == 'pinned'
+        run: |
+          node scripts/init.mjs --name ci-site --title "CI Site" --host ci.example.com \
+            --issuer https://auth.example.com --client-id ci-site --api ""
+          test ! -e scripts/init.mjs
+          npm run lint && npm test && npm run build

@@ -1,5 +1,10 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { act, cleanup, render, screen } from "@testing-library/react";
+vi.mock("../auth.js", async () => {
+  const { createStandInSession, useSession } = await import("./standInSession.js");
+  return { session: createStandInSession(), useSession };
+});
+
 import { App } from "../App.jsx";
 import { session } from "../auth.js";
 import { config } from "../config.js";

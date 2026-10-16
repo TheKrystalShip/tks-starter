@@ -1,7 +1,18 @@
 # tks-starter
 
-A TheKrystalShip web app to start a project from: a static front end that calls its APIs cross-origin
-with a bearer, built on `@thekrystalship/krystal`.
+A TheKrystalShip web app: a static front end that calls its APIs cross-origin
+with a bearer, drawn by `@thekrystalship/krystal` and signed in through `@thekrystalship/auth-client`.
+
+## Starting a project
+
+1. Make a repository from this template and clone it.
+2. `npm install`, then `npm run init`: it asks for the project's name, title, host, sign-in issuer,
+   client id and API, writes them in, and deletes itself.
+3. Register the client at the issuer as a public client, with `https://<host>/signed-in` as its redirect
+   and `https://<host>/` as its post-sign-out address (`init` prints both).
+4. Replace `public/icon-source.svg` and run `npm run icons`.
+5. `./deploy/setup.sh` once on the host, then `./deploy/deploy.sh`.
+6. Fill in `docs/component-page.md` and move it to `kgsm-docs/components/`.
 
 ## What is in it
 
@@ -19,10 +30,10 @@ with a bearer, built on `@thekrystalship/krystal`.
   this site's client id, read before the first render. One build runs anywhere.
 - **API calls** (`src/api.js`, `src/useApi.js`): a base address from the config, JSON in and out, and an
   `ApiError` whose message `DataState` draws. Requests go through the session's `authorizedFetch`.
-- **The session** (`src/auth.js`): the interface of `@thekrystalship/auth-client`, in one module. The
-  gate (`src/App.jsx`) draws one screen for an `ended` session, sends a person who is not signed in on a
-  non-public page to `session.signIn`, and draws nothing for `restoring` or `stale`. The page requires
-  sign-in only when the config names an issuer and a client.
+- **The session** (`src/auth.js`): `@thekrystalship/auth-client`, configured from `config.json`, in one
+  module. The gate (`src/App.jsx`) draws one screen for an `ended` session, sends a person who is not
+  signed in on a non-public page to sign in, and draws nothing for `restoring` or `stale`. The site
+  requires sign-in only when the config names an issuer and a client.
 - **The theme** (`vite.config.js`): `/theme-boot.js` is written from the kit's theme list and storage
   key and loaded first in the page's head, so the stored theme paints before the first frame and the
   theme picker agrees with it.
@@ -39,6 +50,7 @@ with a bearer, built on `@thekrystalship/krystal`.
 
 | Command | |
 |---|---|
+| `npm run init` | Makes a fresh copy a project of its own, once. |
 | `npm run dev` | The dev server on `:5176`. |
 | `npm run build` | The static site in `dist/`. |
 | `npm run preview` | Serves `dist/` on `:4176`. |
@@ -48,3 +60,16 @@ with a bearer, built on `@thekrystalship/krystal`.
 
 `@thekrystalship/krystal` installs from GitHub Packages: `.npmrc` maps the scope, and the workstation's
 `~/.npmrc` holds a token with `read:packages`.
+| `./deploy/setup.sh` | Once per host: the web root and, with `SITE_HOST`, the certificate and the nginx vhost. |
+| `./deploy/deploy.sh` | Builds, writes `config.json` from `deploy/deploy.local.env`, and syncs into the web root. |
+
+## Recipes
+
+- **The assistant.** Pin `@thekrystalship/krystal-chat` at the kit's version, add the chat's page as a
+  route, and point `createAssistantClient` at the harness plugin that serves the product; tokens come
+  from `session.fresh()`.
+- **A television mode.** Mark the root `data-tv`, start the kit's spatial focus
+  (`@thekrystalship/krystal/lib/spatialFocus`), draw the television pages from the kit's TV components,
+  and sign the screen in with `session.device.start()`. MovieBot's site is the worked example.
+- **Packaging for other hosts.** The workspace's `scripts/ci-template/` and the distribution canon in
+  `kgsm-docs/systems/distribution/`.

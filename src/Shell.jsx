@@ -53,7 +53,7 @@ export function Shell({ route, snapshot }) {
         </Sidebar>
       )}
       tabBar={<TabBar items={PLACES.map((p) => ({ id: p.id, icon: p.icon, label: p.label, active: lit(p), onClick: () => navigate(p.path) }))} />}>
-      <Container size="lg" className="starter-page">
+      <Container size="lg" className="site-page">
         <ErrorBoundary resetKey={route.href}>
           <Page />
         </ErrorBoundary>
