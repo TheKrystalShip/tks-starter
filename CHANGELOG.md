@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.4.1]
+
+- `@thekrystalship/krystal` 3.0.1.
+- The tests run with Node's own web storage off, so they read jsdom's and print no storage warning.
+
 ## [0.4.0]
 
 - `@thekrystalship/krystal` 3.0.0.

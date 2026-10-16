@@ -85,5 +85,7 @@ export default defineConfig({
   preview: { port: 4176, strictPort: true },
   // The design system is one chunk; the size warning would fire on every build.
   build: { outDir: "dist", sourcemap: true, target: "es2022", chunkSizeWarningLimit: 1500 },
-  test: { environment: "jsdom", include: ["src/**/*.test.{js,jsx}"] },
+  // Node's own localStorage stands in front of jsdom's and warns on every read without a file behind
+  // it; with it off, the tests read jsdom's storage, as a page reads the browser's.
+  test: { environment: "jsdom", include: ["src/**/*.test.{js,jsx}"], execArgv: ["--no-experimental-webstorage"] },
 });
