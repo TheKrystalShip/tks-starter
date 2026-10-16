@@ -1,0 +1,13 @@
+@layer site.reset {
+  html, body, #root { height: 100%; }
+  body { margin: 0; }
+}
+
+/* The column every page stands in: the frame owns the side gutters, the page adds the vertical room. */
+.starter-page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-6);
+  padding-block: var(--s-6) 64px;
+}
+@media (max-width: 768px) { .starter-page { gap: var(--s-4); padding-block: var(--s-4) var(--s-8); } }
