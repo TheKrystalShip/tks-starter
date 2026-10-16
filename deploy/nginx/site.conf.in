@@ -21,7 +21,8 @@ server {
     root  @WEBROOT@;
     index index.html;
 
-    add_header Cache-Control           $@PROJECT@_cache always;
+    # Without `always`: an error answer carries no cache lifetime, so a missing asset is never kept.
+    add_header Cache-Control           $@PROJECT@_cache;
     add_header Strict-Transport-Security "max-age=31536000" always;
     add_header X-Content-Type-Options  "nosniff" always;
     add_header Referrer-Policy         "strict-origin-when-cross-origin" always;

@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.2.2]
+
+- An error answer from the site's nginx carries no cache lifetime, so a missing asset is never kept.
+
 ## [0.2.1]
 
 - A sign-in callback that carries no return address goes home rather than leaving `/signed-in` on screen.

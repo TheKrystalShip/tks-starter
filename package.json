@@ -1,7 +1,7 @@
 {
   "name": "tks-starter",
   "private": true,
-  "version": "0.2.1",
+  "version": "0.2.2",
   "type": "module",
   "description": "A TheKrystalShip web app to start a project from.",
   "scripts": {
