@@ -13,6 +13,8 @@ with a bearer, drawn by `@thekrystalship/krystal` and signed in through `@thekry
 4. Replace `public/icon-source.svg` and run `npm run icons`.
 5. `./deploy/setup.sh` once on the host, then `./deploy/deploy.sh`.
 6. Fill in `docs/component-page.md` and move it to `kgsm-docs/components/`.
+7. For an Android app of the site, run `tks-shell`'s `new-app.sh` into this repository
+   (`kgsm-docs/systems/shell/README.md`).
 
 ## What is in it
 
