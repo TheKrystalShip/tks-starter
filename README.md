@@ -10,7 +10,7 @@ with a bearer, drawn by `@thekrystalship/krystal` and signed in through `@thekry
    client id and API, writes them in, and deletes itself.
 3. Register the client at the issuer as a public client, with `https://<host>/signed-in` as its redirect
    and `https://<host>/` as its post-sign-out address (`init` prints both).
-4. Replace `public/icon-source.svg` and run `npm run icons`.
+4. Put the site's Lucide glyph in `identity.js` and run `npm run icons`.
 5. `./deploy/setup.sh` once on the host, then `./deploy/deploy.sh`.
 6. Fill in `docs/component-page.md` and move it to `kgsm-docs/components/`.
 7. For an Android app of the site, run `tks-shell`'s `new-app.sh` into this repository
@@ -20,6 +20,8 @@ with a bearer, drawn by `@thekrystalship/krystal` and signed in through `@thekry
 
 - **The shell** (`src/Shell.jsx`): the kit's `AppShell` with the `Sidebar` on wide screens and the
   `TabBar` on phones, an `ErrorBoundary` around the page, and `src/site.js` listing the places both draw.
+  The sidebar carries the organisation's mark beside the site's name, and ends with the account menu
+  every site shares: Profile (the account page at the issuer), Settings, a rule and Sign out.
 - **The router** (`src/router.js`): real paths over the History API. A page is a row of `ROUTES`; a
   `:name` segment is a parameter and `public: true` opens a page to a person who is not signed in.
   Addresses are built in `src/paths.js`. The server answers every path that is not a file with
@@ -36,15 +38,18 @@ with a bearer, drawn by `@thekrystalship/krystal` and signed in through `@thekry
   module. The gate (`src/App.jsx`) draws one screen for an `ended` session, sends a person who is not
   signed in on a non-public page to sign in, and draws nothing for `restoring` or `stale`. The site
   requires sign-in only when the config names an issuer and a client.
-- **The theme** (`vite.config.js`): `/theme-boot.js` is written from the kit's theme list and storage
-  key and loaded first in the page's head, so the stored theme paints before the first frame and the
-  theme picker agrees with it.
+- **The site's identity** (`identity.js`, `siteIdentity` in `vite.config.js`): the kit's boot script,
+  first in the page's head, paints the stored theme before the first frame and keeps the tab's icon,
+  the browser's colour and the splash in the palette shown. The splash, the mark on the canvas, covers
+  the page from the first frame until it is ready: `App` lets it go after its first commit, and
+  `useApi` holds it while a GET has nothing to show yet.
 - **Installing and offline** (`public/manifest.webmanifest`, `public/sw.js`, `public/offline.html`,
   `src/registerSW.js`): the worker holds the shell and the hashed assets, fetches pages network-first,
   answers with the held index when the network fails, and with `offline.html` when that is missing. It
   keeps no API data. It registers in production builds only.
-- **Icons and launch screens** (`scripts/make-icons.mjs`): `npm run icons` makes every icon and iOS
-  launch image under `public/` from `public/icon-source.svg`. It needs `rsvg-convert`.
+- **Icons and launch screens**: `npm run icons` (the kit's `krystal-icons`) draws every icon and iOS
+  launch image under `public/` from `identity.js`, in the default palette, and an Android app's
+  launcher icon when `identity.js` names its `res/`. It needs `rsvg-convert`.
 - **Lint**: the kit's ESLint and Stylelint configs at error. A site styles its own class names and
   reaches the kit through props, variants and tokens, never through a `.k-` selector.
 
@@ -58,7 +63,7 @@ with a bearer, drawn by `@thekrystalship/krystal` and signed in through `@thekry
 | `npm run preview` | Serves `dist/` on `:4176`. |
 | `npm run lint`, `npm run lint:css` | ESLint and Stylelint. |
 | `npm test` | Vitest. |
-| `npm run icons` | Remakes the icons and launch screens. |
+| `npm run icons` | Redraws the icons and launch screens from `identity.js`. |
 
 `@thekrystalship/krystal` installs from GitHub Packages: `.npmrc` maps the scope, and the workstation's
 `~/.npmrc` holds a token with `read:packages`.

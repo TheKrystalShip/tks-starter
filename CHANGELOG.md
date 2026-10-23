@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.5.0]
+
+- On Krystal 8.2.0. The site's mark is a Lucide glyph in `identity.js`: the kit draws the favicon, the
+  install icons and the launch screens from it, keeps the tab's icon and browser colour in the theme
+  shown, and opens every page on the splash until it is ready. The sidebar carries the organisation's
+  mark, and its account menu is the one every site shares: Profile, Settings, a rule and Sign out.
+  Settings is in the account menu, and in the tab bar on a phone.
+
 ## [0.4.1]
 
 - `@thekrystalship/krystal` 3.0.1.

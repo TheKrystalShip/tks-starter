@@ -1,9 +1,11 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useState } from "react";
+import { holdSplash } from "@thekrystalship/krystal";
 import { api } from "./api.js";
 
 /**
  * The state of one GET, in the flags `DataState` and the page layouts take. A `path` of null asks
- * nothing and reports nothing loading. `reload` asks again.
+ * nothing and reports nothing loading. `reload` asks again. A GET with nothing to show yet holds the
+ * splash, so the first page is shown once it has its answers.
  */
 export function useApi(path) {
   const [state, setState] = useState({ data: null, loading: path != null, error: null });
@@ -24,5 +26,7 @@ export function useApi(path) {
   }, [path, attempt]);
 
   const reload = useCallback(() => setAttempt((n) => n + 1), []);
+  const waiting = state.loading && state.data == null;
+  useLayoutEffect(() => (waiting ? holdSplash() : undefined), [waiting]);
   return { ...state, reload };
 }
