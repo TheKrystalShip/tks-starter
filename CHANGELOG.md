@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.0]
+
+- On Krystal 10.0.0. The phone's tab bar is the kit's `TabDock`: Home in the middle tab, Items and
+  Settings beside it, and a drag up or a tap on the handle opens a sheet of every page. A long-press on
+  a tab, or Edit in the sheet, puts any page on the bar, and the choice is kept in this browser. The
+  router owns the table of landing places the sidebar and the dock list.
+
 ## [0.5.0]
 
 - On Krystal 8.2.0. The site's mark is a Lucide glyph in `identity.js`: the kit draws the favicon, the

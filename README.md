@@ -19,13 +19,16 @@ with a bearer, drawn by `@thekrystalship/krystal` and signed in through `@thekry
 ## What is in it
 
 - **The shell** (`src/Shell.jsx`): the kit's `AppShell` with the `Sidebar` on wide screens and the
-  `TabBar` on phones, an `ErrorBoundary` around the page, and `src/site.js` listing the places both draw.
-  The sidebar carries the organisation's mark beside the site's name, and ends with the account menu
-  every site shares: Profile (the account page at the issuer), Settings, a rule and Sign out.
-- **The router** (`src/router.js`): real paths over the History API. A page is a row of `ROUTES`; a
-  `:name` segment is a parameter and `public: true` opens a page to a person who is not signed in.
-  Addresses are built in `src/paths.js`. The server answers every path that is not a file with
-  `index.html`.
+  `TabDock` on phones, and an `ErrorBoundary` around the page. The sidebar carries the organisation's
+  mark beside the site's name, and ends with the account menu every site shares: Profile (the account
+  page at the issuer), Settings, a rule and Sign out. The dock keeps Home in its middle tab; the
+  person's four other tabs are kept in this browser (`src/tabDock.js`), and a project with per-account
+  settings in its API keeps them there too, as Galley does.
+- **The router** (`src/router.js`): real paths over the History API. `PLACES` is the table of landing
+  places in their `SECTIONS`, which the router parses and the sidebar and the dock's sheet list, so a
+  place added there is in all three; a page that takes an argument is a row of `ROUTES`. A `:name`
+  segment is a parameter and `public: true` opens a page to a person who is not signed in. Addresses
+  are built in `src/paths.js`. The server answers every path that is not a file with `index.html`.
 - **The pages** (`src/pages/`): Home, a list page with its detail page over the kit's `ListPage`,
   `DetailPage` and `DataState`, Settings (the theme picker and the account section) and not found. The
   list page asks `GET /items` and the detail page `GET /items/:id` only when `config.json` names an API;

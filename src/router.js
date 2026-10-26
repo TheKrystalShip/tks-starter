@@ -5,14 +5,37 @@ import { createStore, useStore } from "@thekrystalship/krystal";
 import { homePath, itemsPath, settingsPath } from "./paths.js";
 
 /**
+ * The sections the landing places are grouped in. `sidebar` marks a section the sidebar lists; the
+ * dock's sheet lists every one, and the sidebar reaches the rest through its account menu.
+ */
+export const SECTIONS = [
+  { id: "start", label: "Home", sidebar: true },
+  { id: "browse", label: "Browse", sidebar: true },
+  { id: "account", label: "Account" },
+];
+
+/**
+ * The landing places: the pages a person can open with no argument, in the order each section lists
+ * them. `view` is the page the path parses to and `views` the routes the place stays lit for. The
+ * router parses these paths, and the sidebar and the dock's sheet list them.
+ */
+export const PLACES = [
+  { id: "home", view: "home", icon: "house", label: "Home", path: homePath, section: "start", views: ["home"] },
+  { id: "items", view: "items", icon: "list", label: "Items", path: itemsPath, section: "browse", views: ["items", "item"] },
+  { id: "settings", view: "settings", icon: "settings", label: "Settings", path: settingsPath, section: "account", views: ["settings"] },
+];
+
+/** The places of one section, in order. */
+export const placesOf = (section) => PLACES.filter((p) => p.section === section);
+
+/**
  * The pages. `pattern` is the path, a `:name` segment is a parameter, and `public` marks a page a
- * person who is not signed in may open. Every other page sends them to sign in.
+ * person who is not signed in may open. Every other page sends them to sign in. The places give their
+ * own pages; the rest take an argument or are reached from a place.
  */
 const ROUTES = [
-  { view: "home", pattern: homePath },
-  { view: "items", pattern: itemsPath },
+  ...PLACES.map((p) => ({ view: p.view, pattern: p.path })),
   { view: "item", pattern: itemsPath + "/:id" },
-  { view: "settings", pattern: settingsPath },
 ].map((route) => ({ ...route, segments: route.pattern.split("/").filter(Boolean) }));
 
 const decode = (s) => {

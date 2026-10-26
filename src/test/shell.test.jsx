@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { act, cleanup, render, screen } from "@testing-library/react";
+import { act, cleanup, render, screen, within } from "@testing-library/react";
 vi.mock("../auth.js", async () => {
   const { createStandInSession, useSession } = await import("./standInSession.js");
   return { session: createStandInSession(), useSession };
@@ -8,7 +8,8 @@ vi.mock("../auth.js", async () => {
 import { App } from "../App.jsx";
 import { session } from "../auth.js";
 import { config } from "../config.js";
-import { navigate } from "../router.js";
+import { PLACES, navigate } from "../router.js";
+import { tabDockStore } from "../tabDock.js";
 
 const ada = { claims: { sub: "u1", name: "Ada Lovelace", preferred_username: "ada" } };
 
@@ -57,5 +58,15 @@ describe("the shell", () => {
     act(() => screen.getByRole("button", { name: "Sign in again" }).click());
     expect(signIn).toHaveBeenCalled();
     expect(screen.queryByRole("navigation")).toBeNull();
+  });
+
+  it("draws the phone's tab dock: Home in the middle, every place in the sheet", () => {
+    act(() => session.adopt(ada, async () => null));
+    render(<App />);
+    const bar = screen.getByRole("navigation", { name: "Main" });
+    const tabs = within(bar).getAllByRole("button").map((b) => b.getAttribute("aria-label") || b.textContent);
+    expect(tabs.filter((t) => t === "Home").length).toBe(1);
+    for (const place of PLACES) expect(document.body.textContent).toContain(place.label);
+    expect(tabDockStore.getState()).toBeNull();
   });
 });

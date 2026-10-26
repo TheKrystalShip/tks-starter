@@ -1,7 +1,7 @@
 {
   "name": "tks-starter",
   "private": true,
-  "version": "0.5.0",
+  "version": "0.6.0",
   "type": "module",
   "description": "A TheKrystalShip web app to start a project from.",
   "scripts": {
@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@thekrystalship/auth-client": "0.1.1",
-    "@thekrystalship/krystal": "8.2.0",
+    "@thekrystalship/krystal": "10.0.0",
     "lucide-react": "^0.460.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
