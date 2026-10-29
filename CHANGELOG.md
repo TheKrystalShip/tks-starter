@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.6.1]
+
+- `init` leaves a project that lints: with no scripts of its own left, the project's `scripts/` and
+  its place in `npm run lint` go with `init.mjs`.
+
 ## [0.6.0]
 
 - On Krystal 10.0.0. The phone's tab bar is the kit's `TabDock`: Home in the middle tab, Items and

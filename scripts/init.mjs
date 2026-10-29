@@ -8,7 +8,7 @@
 // Anything not given as a flag is asked for. `--host`, `--issuer`, `--client-id` and `--api` go into
 // deploy/deploy.local.env, which is untracked; the rest is written into the sources.
 
-import { existsSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync, rmSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { createInterface } from "node:readline/promises";
 import { fileURLToPath } from "node:url";
@@ -55,10 +55,13 @@ const edit = (file, fn) => {
 for (const file of SLUG_FILES) edit(file, (s) => s.replaceAll(SLUG, name));
 for (const file of TITLE_FILES) edit(file, (s) => s.replaceAll(`"${TITLE}"`, JSON.stringify(title)).replaceAll(`>${TITLE}<`, `>${title}<`));
 
+// init is the only script the template carries, so a project without scripts of its own lints none.
+const scriptsLeft = readdirSync(join(ROOT, "scripts")).some((f) => f !== "init.mjs");
 edit("package.json", (s) => {
   const pkg = JSON.parse(s);
   pkg.version = "0.1.0";
   delete pkg.scripts.init;
+  if (!scriptsLeft) pkg.scripts.lint = pkg.scripts.lint.replace(" scripts ", " ");
   return JSON.stringify(pkg, null, 2) + "\n";
 });
 writeFileSync(join(ROOT, "CHANGELOG.md"), `# Changelog\n\n## [0.1.0]\n\n- ${title}, from tks-starter.\n`);
@@ -70,7 +73,7 @@ const env = { SITE_HOST: host, SITE_API: api, SITE_ISSUER: issuer, SITE_CLIENT_I
 writeFileSync(join(ROOT, "deploy/deploy.local.env"),
   Object.entries(env).map(([k, v]) => `${k}=${JSON.stringify(v)}`).join("\n") + "\n");
 
-rmSync(join(ROOT, "scripts/init.mjs"));
+rmSync(join(ROOT, scriptsLeft ? "scripts/init.mjs" : "scripts"), { recursive: true });
 
 console.log(`\n${title} (${name}) is ready.`);
 if (issuer) {
